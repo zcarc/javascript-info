@@ -110,7 +110,7 @@ from에 명시한 숫자부터 to에 명시한 숫자까지 출력해주는 함�
    printNumbers(5, 10);
    ```
 
-   </details>
+</details>
 
 ## setTimeout 은 무엇을 보여줄까요?
 
