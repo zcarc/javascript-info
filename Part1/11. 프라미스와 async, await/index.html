@@ -8,11 +8,13 @@
   </head>
   <body>
     <script>
-      new Promise(function (resolve, reject) {
-        setTimeout(() => {
-          throw new Error("에러 발생!");
-        }, 1000);
-      }).catch(alert);
+      Promise.race([
+        new Promise((resolve, reject) =>
+          setTimeout(() => reject(new Error("에러 발생!")), 2000)
+        ),
+        new Promise((resolve, reject) => setTimeout(() => resolve(111), 1000)),
+        new Promise((resolve, reject) => setTimeout(() => resolve(333), 3000)),
+      ]).then(alert);
     </script>
   </body>
 </html>
