@@ -8,52 +8,14 @@
   </head>
   <body>
     <script>
-      function loadScript(src, callback) {
-        let script = document.createElement("script");
-        script.src = src;
+      let promise = Promise.reject(new Error("프라미스 실패!"));
 
-        script.onload = () => callback(null, script);
-        script.onerror = () =>
-          callback(new Error(`${src}를 불러오는 도중에 에러가 발생함`));
+      setTimeout(() => promise.catch((err) => alert("잡았다!")), 1000);
 
-        document.head.append(script);
-      }
-
-      // 사용법:
-      // loadScript('path/script.js', (err, script) => {...})
-
-      function promisify(f) {
-        console.log("f: ", f);
-        return function (...args) {
-          console.log("...args: ", ...args);
-          console.log("args: ", args);
-          // 래퍼 함수를 반환함
-          return new Promise((resolve, reject) => {
-            function callback(err, result) {
-              // f에 사용할 커스텀 콜백
-              if (err) {
-                reject(err);
-              } else {
-                resolve(result);
-              }
-            }
-
-            console.log("typeof args: ", typeof args);
-
-            args.push(callback); // 위에서 만든 커스텀 콜백을 함수 f의 인수 끝에 추가합니다.
-
-            console.log("after push args: ", args);
-            console.log("after push ...args: ", ...args);
-
-            console.log("in Promise this: ", this);
-
-            f.call(this, ...args); // 기존 함수를 호출합니다.
-          });
-        };
-      }
-
-      let loadScriptPromise = promisify(loadScript);
-      loadScriptPromise("./test.js").then((res) => console.log("res: ", res));
+      // Error: 프라미스 실패!
+      window.addEventListener("unhandledrejection", (event) =>
+        alert(event.reason)
+      );
     </script>
   </body>
 </html>
